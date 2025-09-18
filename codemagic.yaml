@@ -3,10 +3,10 @@ workflows:
     name: Build OpenIM iOS Demo IPA
     max_build_duration: 60
     environment:
-      xcode: latest
       vars:
         REPO_URL: "https://github.com/guigui779/quanxianshili.git"
         BRANCH: "main"
+      xcode: latest
     scripts:
       - name: Clone OpenIM Demo
         script: |
@@ -19,14 +19,14 @@ workflows:
             cd ..
           fi
 
-      - name: Install CocoaPods
+      - name: Install Pods
         script: |
-          cd Example
+          cd openim-ios-demo/Example
           pod install --repo-update
 
       - name: Build and Export IPA
         script: |
-          cd Example
+          cd openim-ios-demo/Example
           mkdir -p build
 
           # Archive
@@ -35,13 +35,18 @@ workflows:
                      -sdk iphoneos \
                      -configuration Release \
                      -archivePath ./build/OpenIMSDKUIKit.xcarchive \
-                     CODE_SIGNING_ALLOWED=NO archive
+                     CODE_SIGN_STYLE=Manual \
+                     DEVELOPMENT_TEAM=UA9Z6NRCL8 \
+                     PROVISIONING_PROFILE_SPECIFIER="00008110-001949240CA0201E" \
+                     CODE_SIGN_IDENTITY="iPhone Developer: wenqiang Luo (UA9Z6NRCL8)" \
+                     archive
 
           # Export IPA
           xcodebuild -exportArchive \
                      -archivePath ./build/OpenIMSDKUIKit.xcarchive \
                      -exportPath ./build/OpenIMSDKUIKit.ipa \
-                     -exportOptionsPlist ExportOptions.plist
+                     -exportOptionsPlist ./ExportOptions.plist \
+                     -allowProvisioningUpdates
 
     artifacts:
       - openim-ios-demo/Example/build/OpenIMSDKUIKit.ipa
