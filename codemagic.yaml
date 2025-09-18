@@ -6,7 +6,6 @@ workflows:
       vars:
         REPO_URL: "https://github.com/openimsdk/openim-ios-demo.git"
         BRANCH: "main"
-      cocoapods: true
       xcode: latest
     scripts:
       - name: Clone repository
