@@ -21,12 +21,12 @@ workflows:
 
       - name: Install Pods
         script: |
-          cd openim-ios-demo/Example
+          cd Example
           pod install --repo-update
 
       - name: Build and Export IPA
         script: |
-          cd openim-ios-demo/Example
+          cd Example
           mkdir -p build
 
           # Archive
