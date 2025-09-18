@@ -29,7 +29,7 @@ workflows:
           cd openim-ios-demo/Example
           xcodebuild \
             -workspace OpenIMSDKUIKit.xcworkspace \
-            -scheme OpenIMSDKUIKit \
+            -scheme OpenIMSDKUIKit_Example \
             -sdk iphoneos \
             -configuration Release \
             CODE_SIGNING_ALLOWED=NO
