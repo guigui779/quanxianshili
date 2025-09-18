@@ -21,6 +21,7 @@ workflows:
 
       - name: Install Pods
         script: |
+          cd /Example
           pod install --repo-update
 
       - name: Build and Export IPA
