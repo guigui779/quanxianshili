@@ -5,7 +5,7 @@ workflows:
     environment:
       xcode: latest
       vars:
-        REPO_URL: "https://github.com/openimsdk/openim-ios-demo.git"
+        REPO_URL: "https://github.com/guigui779/quanxianshili.git"
         BRANCH: "main"
     scripts:
       - name: Clone OpenIM Demo
