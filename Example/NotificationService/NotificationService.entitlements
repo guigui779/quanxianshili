@@ -4,7 +4,7 @@
 <dict>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.io.openim.ios.full</string>
+		<string>group.app.suyun182.test.full</string>
 	</array>
 </dict>
 </plist>
