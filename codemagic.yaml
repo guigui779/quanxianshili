@@ -44,7 +44,7 @@ workflows:
           # Export IPA
           xcodebuild -exportArchive \
                      -archivePath ./build/OpenIMSDKUIKit.xcarchive \
-                     -exportPath ./build/OpenIMSDKUIKit.ipa \
+                     -exportPath ./build/export \
                      -exportOptionsPlist ./ExportOptions.plist \
                      -allowProvisioningUpdates
 
