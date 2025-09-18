@@ -37,7 +37,6 @@ workflows:
                      -archivePath ./build/OpenIMSDKUIKit.xcarchive \
                      CODE_SIGN_STYLE=Manual \
                      DEVELOPMENT_TEAM=UA9Z6NRCL8 \
-                     PROVISIONING_PROFILE_SPECIFIER="00008110-001949240CA0201E" \
                      CODE_SIGN_IDENTITY="iPhone Developer: wenqiang Luo (UA9Z6NRCL8)" \
                      archive
 
