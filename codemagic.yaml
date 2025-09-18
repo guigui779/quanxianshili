@@ -4,20 +4,27 @@ workflows:
     max_build_duration: 60
     environment:
       vars:
-        REPO_URL: "https://github.com/guigui779/quanxianshili.git"
-        BRANCH: "main"
+        DEV_TEAM: $DEV_TEAM
+        DEV_CERT: $DEV_CERT
+        DEV_PASSWORD: $DEV_PASSWORD
+        DEV_PROFILE: $DEV_PROFILE
+        PROVISIONING_PROFILE_SPECIFIER: $PROVISIONING_PROFILE_SPECIFIER
       xcode: latest
     scripts:
-      - name: Clone OpenIM Demo
+      - name: Setup Certificates
         script: |
-          if [ ! -d "openim-ios-demo" ]; then
-            git clone $REPO_URL
-          else
-            cd openim-ios-demo
-            git checkout $BRANCH
-            git pull origin $BRANCH
-            cd ..
-          fi
+          echo $DEV_CERT | base64 --decode > dev_cert.p12
+          echo $DEV_PROFILE | base64 --decode > dev_profile.mobileprovision
+
+          # Install cert in keychain
+          security create-keychain -p "" build.keychain
+          security import dev_cert.p12 -k build.keychain -P $DEV_PASSWORD -T /usr/bin/codesign
+          security list-keychains -s build.keychain
+          security unlock-keychain -p "" build.keychain
+
+          # Copy provisioning profile
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          cp dev_profile.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/
 
       - name: Install Pods
         script: |
@@ -28,20 +35,16 @@ workflows:
         script: |
           cd Example
           mkdir -p build
-
-          # Archive
           xcodebuild -workspace OpenIMSDKUIKit.xcworkspace \
                      -scheme OpenIMSDKUIKit_Example \
                      -sdk iphoneos \
                      -configuration Release \
                      -archivePath ./build/OpenIMSDKUIKit.xcarchive \
-                     CODE_SIGN_STYLE=Manual \
-                     DEVELOPMENT_TEAM=UA9Z6NRCL8 \
-                     PROVISIONING_PROFILE_SPECIFIER="00008110-001949240CA0201E" \
-                     CODE_SIGN_IDENTITY="iPhone Developer: wenqiang Luo (UA9Z6NRCL8)" \
+                     DEVELOPMENT_TEAM=$DEV_TEAM \
+                     PROVISIONING_PROFILE_SPECIFIER=$PROVISIONING_PROFILE_SPECIFIER \
+                     CODE_SIGN_IDENTITY="iPhone Developer" \
                      archive
 
-          # Export IPA
           xcodebuild -exportArchive \
                      -archivePath ./build/OpenIMSDKUIKit.xcarchive \
                      -exportPath ./build/export \
@@ -49,4 +52,4 @@ workflows:
                      -allowProvisioningUpdates
 
     artifacts:
-      - openim-ios-demo/Example/build/OpenIMSDKUIKit.ipa
+      - openim-ios-demo/Example/build/export/OpenIMSDKUIKit.ipa
