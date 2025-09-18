@@ -1,20 +1,27 @@
+cat > ExportOptions.plist <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" 
-"http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>method</key>
-    <string>development</string>
-    <key>signingStyle</key>
-    <string>manual</string>
-    <key>teamID</key>
-    <string>UA9Z6NRCL8</string>
-    <key>provisioningProfiles</key>
-    <dict>
-        <key>OpenIMSDKUIKit_Example</key>
-        <string>DEV_PROFILE</string>
-    </dict>
-    <key>compileBitcode</key>
-    <false/>
+  <key>method</key>
+  <string>development</string>
+  <key>teamID</key>
+  <string>UA9Z6NRCL8</string>
+  <key>signingStyle</key>
+  <string>manual</string>
+  <key>provisioningProfiles</key>
+  <dict>
+    <key>UA9Z6NRCL8.app.suyun182.test</key>
+    <string>00008110-001949240CA0201E</string>
+  </dict>
+  <key>compileBitcode</key>
+  <false/>
+  <key>destination</key>
+  <string>export</string>
+  <key>stripSwiftSymbols</key>
+  <true/>
+  <key>thinning</key>
+  <string>&lt;none&gt;</string>
 </dict>
 </plist>
+EOF
