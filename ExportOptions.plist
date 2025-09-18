@@ -2,11 +2,15 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+    <key>teamID</key>
+    <string>UA9Z6NRCL8</string>   <!-- 你的 Team ID -->
     <key>method</key>
-    <string>development</string>
+    <string>development</string>  <!-- 对应开发证书 -->
     <key>signingStyle</key>
-    <string>automatic</string>
-    <key>compileBitcode</key>
+    <string>manual</string>
+    <key>provisioningProfiles</key>
     <false/>
 </dict>
+    <key>OpenIMSDKUIKit_Example</key>
+    <string>DEV_PROFILE</string>
 </plist>
