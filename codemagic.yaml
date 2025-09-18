@@ -13,7 +13,7 @@ workflows:
           if [ ! -d "openim-ios-demo" ]; then
             git clone $REPO_URL
           else
-            cd openim-ios-demo/Example
+            cd openim-ios-demo
             git checkout $BRANCH
             git pull origin $BRANCH
             cd ..
@@ -21,11 +21,12 @@ workflows:
 
       - name: Install Pods
         script: |
-          cd /Example
+          cd openim-ios-demo/Example
           pod install --repo-update
 
       - name: Build and Export IPA
         script: |
+          cd openim-ios-demo/Example
           mkdir -p build
 
           # Archive
