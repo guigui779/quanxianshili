@@ -41,7 +41,7 @@ workflows:
           xcodebuild -exportArchive \
                      -archivePath ./build/OpenIMSDKUIKit.xcarchive \
                      -exportPath ./build/OpenIMSDKUIKit.ipa \
-                     -exportOptionsPlist ../../ExportOptions.plist
+                     -exportOptionsPlist ExportOptions.plist
 
     artifacts:
       - openim-ios-demo/Example/build/OpenIMSDKUIKit.ipa
