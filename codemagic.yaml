@@ -3,6 +3,8 @@ workflows:
     name: Build OpenIM iOS Demo IPA
     max_build_duration: 60
     environment:
+      groups:
+        - wenqiang Luo
       vars:
         DEV_TEAM: $DEV_TEAM
         DEV_CERT: $DEV_CERT
