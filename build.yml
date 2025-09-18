@@ -1,20 +1,63 @@
-name: iOS Build
+workflows:
+  ios-build-demo:
+    name: Build OpenIM iOS Demo IPA
+    max_build_duration: 60
+    environment:
+      vars:
+        REPO_URL: "https://github.com/openimsdk/openim-ios-demo.git"
+        BRANCH: "main"
+      xcode: latest
+    scripts:
+      - name: Clone OpenIM Demo
+        script: |
+          if [ ! -d "openim-ios-demo" ]; then
+            git clone $REPO_URL
+          else
+            cd openim-ios-demo
+            git checkout $BRANCH
+            git pull origin $BRANCH
+            cd ..
+          fi
 
-on:
-  push:
-    branches: [ "main" ]
+      - name: Install Pods
+        script: |
+          cd openim-ios-demo/Example
+          pod install --repo-update
 
-jobs:
-  build:
-    runs-on: macos-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Build and Export IPA
+        script: |
+          cd openim-ios-demo/Example
+          mkdir -p build
 
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: stable
+          # 生成 ExportOptions.plist
+          cat <<EOF > ExportOptions.plist
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>method</key>
+    <string>development</string>
+    <key>signingStyle</key>
+    <string>automatic</string>
+    <key>compileBitcode</key>
+    <false/>
+</dict>
+</plist>
+EOF
 
-      - name: Build iOS (no sign)
-        run: flutter build ios --no-codesign
+          # Archive
+          xcodebuild -workspace OpenIMSDKUIKit.xcworkspace \
+                     -scheme OpenIMSDKUIKit_Example \
+                     -sdk iphoneos \
+                     -configuration Release \
+                     -archivePath ./build/OpenIMSDKUIKit.xcarchive \
+                     CODE_SIGNING_ALLOWED=NO archive
+
+          # Export IPA
+          xcodebuild -exportArchive \
+                     -archivePath ./build/OpenIMSDKUIKit.xcarchive \
+                     -exportPath ./build/OpenIMSDKUIKit.ipa \
+                     -exportOptionsPlist ExportOptions.plist
+
+    artifacts:
+      - openim-ios-demo/Example/build/OpenIMSDKUIKit.ipa
